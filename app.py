@@ -18,42 +18,37 @@ def triangle_member(x, a, b, c):
 
 
 def fuzzify_mileage(mileage):
-    low = triangle_member(mileage, 0, 20000, 40000)
+    low = triangle_member(mileage, -40000, 0, 40000)
     medium = triangle_member(mileage, 30000, 50000, 70000)
-    high = triangle_member(mileage, 60000, 80000, 100000)
-
+    high = triangle_member(mileage, 60000, 200000, 400000)
     return {"Low": low, "Medium": medium, "High": high}
 
 
 def fuzzify_year(year):
-    old = triangle_member(year, 2010, 2014, 2018)
+    old = triangle_member(year, 2000, 2010, 2018)
     medium = triangle_member(year, 2015, 2018, 2021)
-    new = triangle_member(year, 2018, 2021, 2023)
-
+    new = triangle_member(year, 2018, 2023, 2030)
     return {"Old": old, "Medium": medium, "New": new}
 
 
 def fuzzify_engine(engine_size):
-    kecil = triangle_member(engine_size, 0, 1.0, 2.0)
+    kecil = triangle_member(engine_size, -1.0, 1.0, 2.0)
     sedang = triangle_member(engine_size, 1.5, 2.5, 3.5)
-    besar = triangle_member(engine_size, 3.0, 4.5, 6.0)
-
+    besar = triangle_member(engine_size, 3.0, 4.5, 8.0)
     return {"Kecil": kecil, "Sedang": sedang, "Besar": besar}
 
 
 def fuzzify_mpg(mpg):
-    boros = triangle_member(mpg, 0, 20, 40)
+    boros = triangle_member(mpg, -20, 20, 40)
     standar = triangle_member(mpg, 30, 50, 70)
-    irit = triangle_member(mpg, 60, 70, 80)
-
+    irit = triangle_member(mpg, 60, 70, 120)
     return {"Boros": boros, "Standar": standar, "Irit": irit}
 
 
 def fuzzify_tax(tax):
-    murah = triangle_member(tax, 0, 100, 200)
+    murah = triangle_member(tax, -100, 100, 200)
     standar = triangle_member(tax, 150, 300, 450)
-    mahal = triangle_member(tax, 400, 500, 600)
-
+    mahal = triangle_member(tax, 400, 600, 1500)
     return {"Murah": murah, "Standar": standar, "Mahal": mahal}
 
 
@@ -92,8 +87,9 @@ def rule_evaluation_all(year, mileage, engine_size, mpg, tax):
 
     agg_dict = {
         "Murah": max(rule2, rule6, rule10, rule12, rule13, rule20),
-        "Standar": max(rule3, rule7, rule9, rule15, rule16, rule17, rule18),
-        "Mewah": max(rule1, rule4, rule5, rule8, rule11, rule14, rule19),
+        "Standar": max(rule3, rule7, rule9, rule15, rule16, rule17),
+        "Premium": max(rule4, rule14, rule18, rule19),
+        "Mewah": max(rule1, rule5, rule8, rule11)
     }
 
     return agg_dict, rules_list
@@ -102,6 +98,7 @@ def rule_evaluation_all(year, mileage, engine_size, mpg, tax):
 def defuzzify_mamdani(output_fuzzy):
     w_murah = output_fuzzy["Murah"]
     w_standar = output_fuzzy["Standar"]
+    w_premium = output_fuzzy["Premium"]
     w_mewah = output_fuzzy["Mewah"]
 
     # Diskritisasi harga dari $0 s.d. $100,000 dengan langkah 500
@@ -110,11 +107,17 @@ def defuzzify_mamdani(output_fuzzy):
     denominator = 0
 
     for y in y_vals:
-        mu_murah = triangle_member(y, 0, 15000, 30000)
-        mu_standar = triangle_member(y, 20000, 35000, 50000)
-        mu_mewah = triangle_member(y, 40000, 50000, 100000)
+        mu_murah = triangle_member(y, 0, 12000, 22000)
+        mu_standar = triangle_member(y, 18000, 28000, 38000)
+        mu_premium = triangle_member(y, 32000, 42000, 52000)
+        mu_mewah = triangle_member(y, 48000, 75000, 120000)
 
-        mu_y = max(min(w_murah, mu_murah), min(w_standar, mu_standar), min(w_mewah, mu_mewah))
+        mu_y = max(
+            min(w_murah, mu_murah),
+            min(w_standar, mu_standar),
+            min(w_premium, mu_premium),
+            min(w_mewah, mu_mewah)
+        )
 
         numerator += y * mu_y
         denominator += mu_y
@@ -128,8 +131,8 @@ def defuzzify_mamdani(output_fuzzy):
 def defuzzify_sugeno(rules):
     # Output konstan (singleton) untuk masing-masing 20 aturan
     z = [
-        50000, 15000, 35000, 50000, 50000, 15000, 35000, 50000, 35000, 15000,
-        50000, 15000, 15000, 50000, 35000, 35000, 35000, 35000, 50000, 15000
+        75000, 12000, 28000, 42000, 75000, 12000, 28000, 75000, 28000, 12000,
+        75000, 12000, 12000, 42000, 28000, 28000, 28000, 42000, 42000, 12000
     ]
     numerator = sum(rules[i] * z[i] for i in range(20))
     denominator = sum(rules)

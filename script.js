@@ -133,41 +133,41 @@ function triangle_member(x, a, b, c) {
 
 function fuzzify_mileage(mileage) {
     return {
-        Low: triangle_member(mileage, 0, 20000, 40000),
+        Low: triangle_member(mileage, -40000, 0, 40000),
         Medium: triangle_member(mileage, 30000, 50000, 70000),
-        High: triangle_member(mileage, 60000, 80000, 100000)
+        High: triangle_member(mileage, 60000, 200000, 400000)
     };
 }
 
 function fuzzify_year(year) {
     return {
-        Old: triangle_member(year, 2010, 2014, 2018),
+        Old: triangle_member(year, 2000, 2010, 2018),
         Medium: triangle_member(year, 2015, 2018, 2021),
-        New: triangle_member(year, 2018, 2021, 2023)
+        New: triangle_member(year, 2018, 2023, 2030)
     };
 }
 
 function fuzzify_engine(engine_size) {
     return {
-        Kecil: triangle_member(engine_size, 0, 1.0, 2.0),
+        Kecil: triangle_member(engine_size, -1.0, 1.0, 2.0),
         Sedang: triangle_member(engine_size, 1.5, 2.5, 3.5),
-        Besar: triangle_member(engine_size, 3.0, 4.5, 6.0)
+        Besar: triangle_member(engine_size, 3.0, 4.5, 8.0)
     };
 }
 
 function fuzzify_mpg(mpg) {
     return {
-        Boros: triangle_member(mpg, 0, 20, 40),
+        Boros: triangle_member(mpg, -20, 20, 40),
         Standar: triangle_member(mpg, 30, 50, 70),
-        Irit: triangle_member(mpg, 60, 70, 80)
+        Irit: triangle_member(mpg, 60, 70, 120)
     };
 }
 
 function fuzzify_tax(tax) {
     return {
-        Murah: triangle_member(tax, 0, 100, 200),
+        Murah: triangle_member(tax, -100, 100, 200),
         Standar: triangle_member(tax, 150, 300, 450),
-        Mahal: triangle_member(tax, 400, 500, 600)
+        Mahal: triangle_member(tax, 400, 600, 1500)
     };
 }
 
@@ -206,8 +206,9 @@ function rule_evaluation_all(year, mileage, engine_size, mpg, tax) {
 
     const agg_dict = {
         Murah: Math.max(rule2, rule6, rule10, rule12, rule13, rule20),
-        Standar: Math.max(rule3, rule7, rule9, rule15, rule16, rule17, rule18),
-        Mewah: Math.max(rule1, rule4, rule5, rule8, rule11, rule14, rule19)
+        Standar: Math.max(rule3, rule7, rule9, rule15, rule16, rule17),
+        Premium: Math.max(rule4, rule14, rule18, rule19),
+        Mewah: Math.max(rule1, rule5, rule8, rule11)
     };
 
     return { agg_dict, rules_list };
@@ -216,6 +217,7 @@ function rule_evaluation_all(year, mileage, engine_size, mpg, tax) {
 function defuzzify_mamdani(output_fuzzy) {
     const w_murah = output_fuzzy.Murah;
     const w_standar = output_fuzzy.Standar;
+    const w_premium = output_fuzzy.Premium;
     const w_mewah = output_fuzzy.Mewah;
 
     let numerator = 0;
@@ -223,13 +225,15 @@ function defuzzify_mamdani(output_fuzzy) {
 
     // Discretize y from 0 to 100,000 in steps of 500
     for (let y = 0; y <= 100000; y += 500) {
-        let mu_murah = triangle_member(y, 0, 15000, 30000);
-        let mu_standar = triangle_member(y, 20000, 35000, 50000);
-        let mu_mewah = triangle_member(y, 40000, 50000, 100000);
+        let mu_murah = triangle_member(y, 0, 12000, 22000);
+        let mu_standar = triangle_member(y, 18000, 28000, 38000);
+        let mu_premium = triangle_member(y, 32000, 42000, 52000);
+        let mu_mewah = triangle_member(y, 48000, 75000, 120000);
 
         let mu_y = Math.max(
             Math.min(w_murah, mu_murah),
             Math.min(w_standar, mu_standar),
+            Math.min(w_premium, mu_premium),
             Math.min(w_mewah, mu_mewah)
         );
 
@@ -243,8 +247,8 @@ function defuzzify_mamdani(output_fuzzy) {
 
 function defuzzify_sugeno(rules) {
     const z = [
-        50000, 15000, 35000, 50000, 50000, 15000, 35000, 50000, 35000, 15000,
-        50000, 15000, 15000, 50000, 35000, 35000, 35000, 35000, 50000, 15000
+        75000, 12000, 28000, 42000, 75000, 12000, 28000, 75000, 28000, 12000,
+        75000, 12000, 12000, 42000, 28000, 28000, 28000, 42000, 42000, 12000
     ];
     let numerator = 0;
     let denominator = 0;
