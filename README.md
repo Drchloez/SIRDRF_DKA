@@ -115,6 +115,12 @@ Untuk mencoba kalkulator estimasi harga secara real-time dan interaktif dengan h
 streamlit run app.py
 ```
 
+### 🌐 Menjalankan Web App Bento Grid (HTML/CSS/JS)
+Project ini juga dilengkapi dengan aplikasi web interaktif berbasis HTML/CSS/JS statis dengan desain **Bento Grid** yang modern dan responsif. Aplikasi ini menjalankan seluruh perhitungan logika fuzzy di sisi klien secara real-time.
+Untuk membukanya:
+* Cukup klik dua kali berkas [index.html](file:///c:/Users/ASUS/Documents/SIR%20Tel-U/SEMESTER%204/DKA/SIRDRF_DKA/index.html) untuk membukanya langsung di peramban web pilihan Anda.
+* Pilihan tipe model mobil yang dipilih akan menampilkan contoh visualisasi mobil Mercedes-Benz secara dinamis yang dimuat langsung dari berkas lokal di folder `assets/` (sehingga web dapat dijalankan 100% offline).
+
 ### 📓 Menjalankan Notebook Jupyter
 Untuk meninjau proses analisis data (EDA) serta pembuktian rumus/perbandingan matematis:
 ```bash
