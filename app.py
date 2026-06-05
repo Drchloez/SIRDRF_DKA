@@ -1,5 +1,5 @@
 import streamlit as st
-
+import numpy as np
 
 def triangle_member(x, a, b, c):
     if x <= a or x >= c:
@@ -57,7 +57,7 @@ def fuzzify_tax(tax):
     return {"Murah": murah, "Standar": standar, "Mahal": mahal}
 
 
-def rule_evaluation(year, mileage, engine_size, mpg, tax):
+def rule_evaluation_all(year, mileage, engine_size, mpg, tax):
     year_fuzzy = fuzzify_year(year)
     mileage_fuzzy = fuzzify_mileage(mileage)
     engine_fuzzy = fuzzify_engine(engine_size)
@@ -85,24 +85,39 @@ def rule_evaluation(year, mileage, engine_size, mpg, tax):
     rule19 = min(year_fuzzy["New"], engine_fuzzy["Sedang"])
     rule20 = min(year_fuzzy["Old"], engine_fuzzy["Kecil"])
 
-    return {
+    rules_list = [
+        rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10,
+        rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19, rule20
+    ]
+
+    agg_dict = {
         "Murah": max(rule2, rule6, rule10, rule12, rule13, rule20),
         "Standar": max(rule3, rule7, rule9, rule15, rule16, rule17, rule18),
         "Mewah": max(rule1, rule4, rule5, rule8, rule11, rule14, rule19),
     }
 
+    return agg_dict, rules_list
 
-def defuzzification(output_fuzzy):
-    murah = output_fuzzy["Murah"]
-    standar = output_fuzzy["Standar"]
-    mewah = output_fuzzy["Mewah"]
 
-    harga_murah = 15000
-    harga_standar = 35000
-    harga_mewah = 50000
+def defuzzify_mamdani(output_fuzzy):
+    w_murah = output_fuzzy["Murah"]
+    w_standar = output_fuzzy["Standar"]
+    w_mewah = output_fuzzy["Mewah"]
 
-    numerator = (murah * harga_murah + standar * harga_standar + mewah * harga_mewah)
-    denominator = murah + standar + mewah
+    # Diskritisasi harga dari $0 s.d. $100,000 dengan langkah 500
+    y_vals = np.arange(0, 100001, 500)
+    numerator = 0
+    denominator = 0
+
+    for y in y_vals:
+        mu_murah = triangle_member(y, 0, 15000, 30000)
+        mu_standar = triangle_member(y, 20000, 35000, 50000)
+        mu_mewah = triangle_member(y, 40000, 50000, 100000)
+
+        mu_y = max(min(w_murah, mu_murah), min(w_standar, mu_standar), min(w_mewah, mu_mewah))
+
+        numerator += y * mu_y
+        denominator += mu_y
 
     if denominator == 0:
         return 0
@@ -110,9 +125,27 @@ def defuzzification(output_fuzzy):
     return numerator / denominator
 
 
-def prediksi_harga(year, mileage, engine_size, mpg, tax):
-    fuzzy_output = rule_evaluation(year, mileage, engine_size, mpg, tax)
-    return defuzzification(fuzzy_output)
+def defuzzify_sugeno(rules):
+    # Output konstan (singleton) untuk masing-masing 20 aturan
+    z = [
+        50000, 15000, 35000, 50000, 50000, 15000, 35000, 50000, 35000, 15000,
+        50000, 15000, 15000, 50000, 35000, 35000, 35000, 35000, 50000, 15000
+    ]
+    numerator = sum(rules[i] * z[i] for i in range(20))
+    denominator = sum(rules)
+
+    if denominator == 0:
+        return 0
+
+    return numerator / denominator
+
+
+def prediksi_harga(year, mileage, engine_size, mpg, tax, method="Mamdani"):
+    agg_dict, rules_list = rule_evaluation_all(year, mileage, engine_size, mpg, tax)
+    if method.lower() == "sugeno":
+        return defuzzify_sugeno(rules_list)
+    else:
+        return defuzzify_mamdani(agg_dict)
 
 
 def kategori_mobil(harga):
@@ -153,14 +186,18 @@ def main():
 
     st.title("🚗 Prediksi Harga Mobil Bekas")
     st.write(
-        "✨ Aplikasi fuzzy Mamdani untuk mengestimasi harga mobil bekas "
+        "✨ Aplikasi logika fuzzy Mamdani & Sugeno untuk mengestimasi harga mobil bekas "
         "berdasarkan spesifikasi kendaraan."
     )
 
     st.sidebar.title("📌 Tentang Project")
     st.sidebar.write(
-        "🧠 Project Dasar Kecerdasan AI menggunakan metode Fuzzy Mamdani "
-        "untuk estimasi harga mobil bekas."
+        "🧠 Project Dasar Kecerdasan AI menggunakan metode Fuzzy Mamdani & Sugeno "
+        "untuk estimasi harga mobil bekas Mercedes-Benz."
+    )
+    st.sidebar.markdown(
+        "📂 **Dataset Source:**\n"
+        "[Kaggle Mercedes Used Car Dataset](https://www.kaggle.com/datasets/koki2525/mercedes-benz-used-car-dataset)"
     )
 
     st.subheader("📝 Input Data Mobil")
@@ -190,14 +227,28 @@ def main():
     st.divider()
 
     if st.button("🔍 Prediksi", type="primary"):
-        harga = prediksi_harga(year, mileage, engine_size, mpg, tax)
-        kategori = kategori_mobil(harga)
+        col_res1, col_res2 = st.columns(2)
+        
+        with col_res1:
+            st.markdown("### 🔴 Fuzzy Mamdani")
+            harga_mamdani = prediksi_harga(year, mileage, engine_size, mpg, tax, method="Mamdani")
+            kat_mamdani = kategori_mobil(harga_mamdani)
+            if harga_mamdani == 0:
+                st.warning("⚠️ Tidak ada rule fuzzy yang aktif.")
+            else:
+                st.metric(label="Estimasi Harga (Centroid)", value=f"${harga_mamdani:,.2f}")
+                st.info(f"🏆 Kategori: {kat_mamdani}")
+                
+        with col_res2:
+            st.markdown("### 🟢 Fuzzy Sugeno")
+            harga_sugeno = prediksi_harga(year, mileage, engine_size, mpg, tax, method="Sugeno")
+            kat_sugeno = kategori_mobil(harga_sugeno)
+            if harga_sugeno == 0:
+                st.warning("⚠️ Tidak ada rule fuzzy yang aktif.")
+            else:
+                st.metric(label="Estimasi Harga (Weighted Avg)", value=f"${harga_sugeno:,.2f}")
+                st.info(f"🏆 Kategori: {kat_sugeno}")
 
-        if harga == 0:
-            st.warning("⚠️ Tidak ada rule fuzzy yang aktif untuk input tersebut.")
-        else:
-            st.success(f"💰 Prediksi Harga: ${harga:,.2f}")
-            st.info(f"🏆 Kategori Mobil: {kategori}")
 
 if __name__ == "__main__":
     main()
