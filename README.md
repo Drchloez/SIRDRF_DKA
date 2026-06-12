@@ -84,20 +84,20 @@ Aturan logika fuzzy didefinisikan secara komprehensif menggunakan operator `AND`
 
 ## 📊 Hasil Evaluasi Performa (Mamdani vs Sugeno)
 
-Pengujian performa dilakukan pada **seluruh data uji (20% test set, 2.572 sampel)** dari dataset nyata [merc.csv](data/merc.csv), menghasilkan evaluasi berikut:
+Pengujian performa dilakukan pada **seluruh data uji (20% test set, 2.572 sampel)** dari dataset nyata [merc.csv](data/merc.csv), menghasilkan evaluasi berikut (Setelah *Fine-Tuning*):
 
 * **Mean Absolute Error (MAE)**:
-  * **Fuzzy Mamdani**: `8,698.53`
-  * **Fuzzy Sugeno**: `8,643.94` *(Sugeno lebih rendah sebesar ~0.6%)*
+  * **Fuzzy Mamdani**: `6,817.37`
+  * **Fuzzy Sugeno**: `6,574.06` *(Sugeno lebih rendah sebesar ~3.5%)*
 * **Mean Squared Error (MSE)**:
-  * **Fuzzy Mamdani**: `120,624,176.47`
-  * **Fuzzy Sugeno**: `117,519,157.54` *(Sugeno lebih rendah sebesar ~2.6%)*
+  * **Fuzzy Mamdani**: `100,336,508.85`
+  * **Fuzzy Sugeno**: `96,956,988.47` *(Sugeno lebih rendah sebesar ~3.3%)*
 * **Root Mean Squared Error (RMSE)**:
-  * **Fuzzy Mamdani**: `10,982.90`
-  * **Fuzzy Sugeno**: `10,840.63` *(Sugeno lebih rendah sebesar ~1.3%)*
+  * **Fuzzy Mamdani**: `10,016.81`
+  * **Fuzzy Sugeno**: `9,846.67` *(Sugeno lebih rendah sebesar ~1.7%)*
 * **Akurasi Klasifikasi Kategori (Classification Accuracy)**:
-  * **Fuzzy Mamdani**: `49.11%` (1.263 dari 2.572 benar)
-  * **Fuzzy Sugeno**: `51.48%` (1.324 dari 2.572 benar) *(Sugeno lebih tinggi sebesar ~2.37% akurasi)*
+  * **Fuzzy Mamdani**: `57.85%` (1.488 dari 2.572 benar)
+  * **Fuzzy Sugeno**: `63.30%` (1.628 dari 2.572 benar) *(Sugeno lebih tinggi sebesar ~5.45% akurasi)*
 
 ### Analisis Kualitatif & Interpretasi:
 1. **Fuzzy Mamdani** lebih unggul pada nilai MSE dan RMSE yang berarti metode ini lebih tangguh terhadap lonjakan kesalahan (*outlier*), karena sifat daerah keanggotaan kontinu pada output memperhalus perubahan harga.
