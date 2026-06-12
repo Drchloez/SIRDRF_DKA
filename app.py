@@ -822,7 +822,7 @@ body.light-mode .visual-overlay {
             <div class="form-grid">
                 <!-- Dropdown Model -->
                 <div class="form-group full-width">
-                    <label for="input-model">🚗 Model Mercedes-Benz:</label>
+                    <label for="input-model"> Model Mercedes-Benz:</label>
                     <select id="input-model" class="select-input">
                         <option value="A-Class">A-Class (Hatchback)</option>
                         <option value="B-Class">B-Class (MPV)</option>
@@ -840,7 +840,7 @@ body.light-mode .visual-overlay {
                 <!-- Sliders -->
                 <div class="form-group">
                     <div class="slider-label">
-                        <span>📅 Tahun Mobil:</span>
+                        <span> Tahun Mobil:</span>
                         <span id="val-year" class="val-bold">2020</span>
                     </div>
                     <input type="range" id="input-year" min="2010" max="2025" value="2020" class="slider">
@@ -848,7 +848,7 @@ body.light-mode .visual-overlay {
 
                 <div class="form-group">
                     <div class="slider-label">
-                        <span>🛣️ Odometer (Mileage):</span>
+                        <span> Odometer (Mileage):</span>
                         <span id="val-mileage" class="val-bold">30.000</span>
                     </div>
                     <input type="range" id="input-mileage" min="0" max="200000" step="5000" value="30000" class="slider">
@@ -856,7 +856,7 @@ body.light-mode .visual-overlay {
 
                 <div class="form-group">
                     <div class="slider-label">
-                        <span>⚙️ Kapasitas Mesin:</span>
+                        <span> Kapasitas Mesin:</span>
                         <span id="val-engine" class="val-bold">1.5</span>
                     </div>
                     <input type="range" id="input-engine" min="0.0" max="6.5" step="0.1" value="1.5" class="slider">
@@ -864,7 +864,7 @@ body.light-mode .visual-overlay {
 
                 <div class="form-group">
                     <div class="slider-label">
-                        <span>⛽ MPG (Bahan Bakar):</span>
+                        <span> MPG (Bahan Bakar):</span>
                         <span id="val-mpg" class="val-bold">40.0</span>
                     </div>
                     <input type="range" id="input-mpg" min="0.0" max="100.0" step="0.1" value="40.0" class="slider">
@@ -872,7 +872,7 @@ body.light-mode .visual-overlay {
 
                 <div class="form-group full-width">
                     <div class="slider-label">
-                        <span>💸 Pajak Tahunan (Tax):</span>
+                        <span> Pajak Tahunan (Tax):</span>
                         <span id="val-tax" class="val-bold">150</span>
                     </div>
                     <input type="range" id="input-tax" min="0" max="1000" step="10" value="150" class="slider">
