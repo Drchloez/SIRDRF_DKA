@@ -135,7 +135,7 @@ jupyter notebook TubesDKA.ipynb
 ---
 
 ## 📂 Informasi Dataset & Pembagian Kelompok
-* **Dataset nyata**: [Kaggle Mercedes Used Car Dataset](https://www.kaggle.com/datasets/adityadesai13/used-car-dataset-ford-and-mercedes?select=merc.csv&hl=id-ID)
+* **Dataset nyata**: [Kaggle Mercedes Used Car Dataset](https://www.kaggle.com/datasets/adityadesai13/used-car-dataset-ford-and-mercedes?select=merc.csv&hl=id-IDJ)
 * **Jumlah baris**: 13.119 data baris
 * **Variabel input**: 5 kolom input (`year`, `mileage`, `engineSize`, `mpg`, `tax`)
 * **Variabel output**: 1 kolom output (`price` - harga mobil bekas dalam USD)
