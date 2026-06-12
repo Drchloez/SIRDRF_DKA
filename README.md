@@ -1,10 +1,10 @@
-# 🚗 Prediksi Harga Mobil Bekas Mercedes-Benz — Logika Fuzzy Mamdani & Sugeno (From Scratch)
+# Prediksi Harga Mobil Bekas Mercedes-Benz — Logika Fuzzy Mamdani & Sugeno (From Scratch)
 
 Project ini merupakan implementasi sistem kecerdasan buatan untuk mengestimasi/memprediksi harga mobil bekas Mercedes-Benz menggunakan metode **Fuzzy Mamdani** dan **Fuzzy Sugeno** secara *from scratch* (tanpa menggunakan library fuzzy eksternal). Project ini disusun untuk memenuhi **Tugas Besar Dasar Kecerdasan Buatan (DKA)**, Universitas Telkom.
 
 ---
 
-## 📂 Struktur Project
+## Struktur Project
 
 ```text
 SIRDRF_DKA/
@@ -19,7 +19,7 @@ SIRDRF_DKA/
 
 ---
 
-## 📝 Detail Himpunan & Aturan Fuzzy
+## Detail Himpunan & Aturan Fuzzy
 
 Sistem fuzzy ini dirancang dengan **5 variabel input** dan **1 variabel output**:
 
@@ -67,7 +67,7 @@ Aturan logika fuzzy didefinisikan secara komprehensif menggunakan operator `AND`
 
 ---
 
-## 🔬 Perbedaan Implementasi (From Scratch)
+## Perbedaan Implementasi (From Scratch)
 
 ### 1. Fuzzy Mamdani (Centroid / Center of Area)
 * Nilai implikasi untuk setiap aturan dievaluasi menggunakan metode *clipping* (`min`).
@@ -82,7 +82,7 @@ Aturan logika fuzzy didefinisikan secara komprehensif menggunakan operator `AND`
 
 ---
 
-## 📊 Hasil Evaluasi Performa (Mamdani vs Sugeno)
+## Hasil Evaluasi Performa (Mamdani vs Sugeno)
 
 Pengujian performa dilakukan pada **seluruh data uji (20% test set, 2.572 sampel)** dari dataset nyata [merc.csv](data/merc.csv), menghasilkan evaluasi berikut (Setelah *Fine-Tuning*):
 
@@ -106,27 +106,27 @@ Pengujian performa dilakukan pada **seluruh data uji (20% test set, 2.572 sampel
 
 ---
 
-## 🚀 Panduan Instalasi & Menjalankan
+## Panduan Instalasi & Menjalankan
 
-### 📦 Prasyarat & Instalasi Dependency
+### Prasyarat & Instalasi Dependency
 Pastikan Python 3.x telah terinstal. Pasang seluruh pustaka yang dibutuhkan dengan perintah:
 ```bash
 pip install streamlit numpy pandas matplotlib scikit-learn
 ```
 
-### 💻 Menjalankan Web App Streamlit
+### Menjalankan Web App Streamlit
 Untuk mencoba kalkulator estimasi harga secara real-time dan interaktif dengan hasil Mamdani & Sugeno yang ditampilkan berdampingan, jalankan:
 ```bash
 streamlit run app.py
 ```
 
-### 🌐 Menjalankan Web App Bento Grid (HTML/CSS/JS)
+### Menjalankan Web App Bento Grid (HTML/CSS/JS)
 Project ini juga dilengkapi dengan aplikasi web interaktif berbasis HTML/CSS/JS statis dengan desain **Bento Grid** yang modern dan responsif. Aplikasi ini menjalankan seluruh perhitungan logika fuzzy di sisi klien secara real-time.
 Untuk membukanya:
 * Cukup klik dua kali berkas [index.html](file:///c:/Users/ASUS/Documents/SIR%20Tel-U/SEMESTER%204/DKA/SIRDRF_DKA/index.html) untuk membukanya langsung di peramban web pilihan Anda.
 * Pilihan tipe model mobil yang dipilih akan menampilkan contoh visualisasi mobil Mercedes-Benz secara dinamis yang dimuat langsung dari berkas lokal di folder `assets/` (sehingga web dapat dijalankan 100% offline).
 
-### 📓 Menjalankan Notebook Jupyter
+### Menjalankan Notebook Jupyter
 Untuk meninjau proses analisis data (EDA) serta pembuktian rumus/perbandingan matematis:
 ```bash
 jupyter notebook TubesDKA.ipynb
@@ -134,7 +134,7 @@ jupyter notebook TubesDKA.ipynb
 
 ---
 
-## 📂 Informasi Dataset & Pembagian Kelompok
+## Informasi Dataset & Pembagian Kelompok
 * **Dataset nyata**: [Kaggle Mercedes Used Car Dataset](https://www.kaggle.com/datasets/adityadesai13/used-car-dataset-ford-and-mercedes?select=merc.csv&hl=id-IDJ)
 * **Jumlah baris**: 13.119 data baris
 * **Variabel input**: 5 kolom input (`year`, `mileage`, `engineSize`, `mpg`, `tax`)
