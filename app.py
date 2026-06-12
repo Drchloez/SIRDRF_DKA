@@ -113,11 +113,11 @@ def defuzzify_mamdani(output_fuzzy):
     denominator = 0
 
     for y in y_vals:
-        # Optimized Mamdani peak centers (aligned with Sugeno optimized singletons)
-        mu_murah = triangle_member(y, 0, 3500, 13500)
-        mu_standar = triangle_member(y, 14400, 24400, 34400)
-        mu_premium = triangle_member(y, 15400, 25400, 35400)
-        mu_mewah = triangle_member(y, 41100, 68300, 120000)
+        # Himpunan fuzzy output harga (segitiga) — sinkron dengan notebook
+        mu_murah = triangle_member(y, 0, 12000, 22000)
+        mu_standar = triangle_member(y, 18000, 28000, 38000)
+        mu_premium = triangle_member(y, 32000, 42000, 52000)
+        mu_mewah = triangle_member(y, 48000, 75000, 120000)
 
         mu_y = max(
             min(w_murah, mu_murah),
@@ -136,10 +136,10 @@ def defuzzify_mamdani(output_fuzzy):
 
 
 def defuzzify_sugeno(rules):
-    # Mathematically optimized singleton (constant) output values for the 20 rules
+    # Singleton output values per rule — sinkron dengan notebook
     z = [
-        68300, 3500, 24400, 25400, 68300, 3500, 24400, 68300, 24400, 3500,
-        68300, 3500, 3500, 25400, 24400, 24400, 24400, 25400, 25400, 3500
+        75000, 12000, 28000, 42000, 75000, 12000, 28000, 75000, 28000, 12000,
+        75000, 12000, 12000, 42000, 28000, 28000, 28000, 42000, 42000, 12000
     ]
     numerator = sum(rules[i] * z[i] for i in range(20))
     denominator = sum(rules)
@@ -1092,10 +1092,10 @@ function defuzzify_mamdani(output_fuzzy) {
 
     // Discretize y from 0 to 100,000 in steps of 500
     for (let y = 0; y <= 100000; y += 500) {
-        let mu_murah = triangle_member(y, 0, 3500, 13500);
-        let mu_standar = triangle_member(y, 14400, 24400, 34400);
-        let mu_premium = triangle_member(y, 15400, 25400, 35400);
-        let mu_mewah = triangle_member(y, 41100, 68300, 120000);
+        let mu_murah = triangle_member(y, 0, 12000, 22000);
+        let mu_standar = triangle_member(y, 18000, 28000, 38000);
+        let mu_premium = triangle_member(y, 32000, 42000, 52000);
+        let mu_mewah = triangle_member(y, 48000, 75000, 120000);
 
         let mu_y = Math.max(
             Math.min(w_murah, mu_murah),
@@ -1114,8 +1114,8 @@ function defuzzify_mamdani(output_fuzzy) {
 
 function defuzzify_sugeno(rules) {
     const z = [
-        68300, 3500, 24400, 25400, 68300, 3500, 24400, 68300, 24400, 3500,
-        68300, 3500, 3500, 25400, 24400, 24400, 24400, 25400, 25400, 3500
+        75000, 12000, 28000, 42000, 75000, 12000, 28000, 75000, 28000, 12000,
+        75000, 12000, 12000, 42000, 28000, 28000, 28000, 42000, 42000, 12000
     ];
     let numerator = 0;
     let denominator = 0;

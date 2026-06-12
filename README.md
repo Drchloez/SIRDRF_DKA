@@ -31,21 +31,23 @@ Sistem fuzzy ini dirancang dengan **5 variabel input** dan **1 variabel output**
 * **Pajak (`tax`)**: Himpunan Fuzzy: *Murah* (0–200), *Standar* (150–450), *Mahal* (400–600+).
 
 ### 2. Variabel Output (Price)
-* **Fuzzy Mamdani (Output berupa Himpunan Fuzzy Kontinu)**:
-  * *Murah*: Himpunan segitiga (0, 15.000, 30.000)
-  * *Standar*: Himpunan segitiga (20.000, 35.000, 50.000)
-  * *Mewah*: Himpunan segitiga (40.000, 50.000, 100.000)
-* **Fuzzy Sugeno Orde Nol (Output berupa Nilai Tunggal / Singleton)**:
-  * *Murah*: $z = 15.000$
-  * *Standar*: $z = 35.000$
-  * *Mewah*: $z = 50.000$
+* **Fuzzy Mamdani (Output berupa Himpunan Fuzzy Kontinu — 4 Kelas)**:
+  * *Murah*: Himpunan segitiga (0, 12.000, 22.000)
+  * *Standar*: Himpunan segitiga (18.000, 28.000, 38.000)
+  * *Premium*: Himpunan segitiga (32.000, 42.000, 52.000)
+  * *Mewah*: Himpunan segitiga (48.000, 75.000, 120.000)
+* **Fuzzy Sugeno Orde Nol (Output berupa Nilai Tunggal / Singleton per Rule)**:
+  * Rule yang mengarah ke *Murah*: $z = 12.000$
+  * Rule yang mengarah ke *Standar*: $z = 28.000$
+  * Rule yang mengarah ke *Premium*: $z = 42.000$
+  * Rule yang mengarah ke *Mewah*: $z = 75.000$
 
 ### 3. Rule Base (20 Aturan Inferensi)
 Aturan logika fuzzy didefinisikan secara komprehensif menggunakan operator `AND` (diwakili oleh fungsi `min`) sebagai berikut:
 1. `Rule 1`: IF year is **New** AND mileage is **Low** AND engine is **Besar** THEN price is **Mewah**
 2. `Rule 2`: IF year is **Old** AND mileage is **High** THEN price is **Murah**
 3. `Rule 3`: IF mpg is **Irit** AND tax is **Murah** THEN price is **Standar**
-4. `Rule 4`: IF year is **New** AND mileage is **Low** AND mpg is **Irit** THEN price is **Mewah**
+4. `Rule 4`: IF year is **New** AND mileage is **Low** AND mpg is **Irit** THEN price is **Premium**
 5. `Rule 5`: IF engine is **Besar** AND tax is **Mahal** THEN price is **Mewah**
 6. `Rule 6`: IF year is **Old** AND mileage is **High** AND mpg is **Boros** THEN price is **Murah**
 7. `Rule 7`: IF engine is **Kecil** AND mpg is **Irit** THEN price is **Standar**
@@ -55,12 +57,12 @@ Aturan logika fuzzy didefinisikan secara komprehensif menggunakan operator `AND`
 11. `Rule 11`: IF year is **New** AND engine is **Besar** THEN price is **Mewah**
 12. `Rule 12`: IF year is **Old** AND tax is **Murah** THEN price is **Murah**
 13. `Rule 13`: IF mpg is **Boros** AND tax is **Mahal** THEN price is **Murah**
-14. `Rule 14`: IF mileage is **Low** AND mpg is **Irit** THEN price is **Mewah**
+14. `Rule 14`: IF mileage is **Low** AND mpg is **Irit** THEN price is **Premium**
 15. `Rule 15`: IF engine is **Sedang** AND year is **Medium** THEN price is **Standar**
 16. `Rule 16`: IF year is **Medium** AND mpg is **Standar** THEN price is **Standar**
 17. `Rule 17`: IF mileage is **Medium** AND tax is **Standar** THEN price is **Standar**
-18. `Rule 18`: IF engine is **Sedang** AND mileage is **Medium** THEN price is **Standar**
-19. `Rule 19`: IF year is **New** AND engine is **Sedang** THEN price is **Mewah**
+18. `Rule 18`: IF engine is **Sedang** AND mileage is **Medium** THEN price is **Premium**
+19. `Rule 19`: IF year is **New** AND engine is **Sedang** THEN price is **Premium**
 20. `Rule 20`: IF year is **Old** AND engine is **Kecil** THEN price is **Murah**
 
 ---
@@ -82,17 +84,20 @@ Aturan logika fuzzy didefinisikan secara komprehensif menggunakan operator `AND`
 
 ## 📊 Hasil Evaluasi Performa (Mamdani vs Sugeno)
 
-Pengujian performa dilakukan pada **25 sampel data uji acak** dari dataset nyata [merc.csv](file:///c:/Users/ASUS/Documents/SIR%20Tel-U/SEMESTER%204/DKA/SIRDRF_DKA/data/merc.csv), menghasilkan evaluasi berikut:
+Pengujian performa dilakukan pada **seluruh data uji (20% test set, 2.572 sampel)** dari dataset nyata [merc.csv](data/merc.csv), menghasilkan evaluasi berikut:
 
 * **Mean Absolute Error (MAE)**:
-  * **Fuzzy Mamdani**: `25,101.33`
-  * **Fuzzy Sugeno**: `23,405.47` *(Sugeno lebih rendah sebesar ~6.7%)*
+  * **Fuzzy Mamdani**: `8,698.53`
+  * **Fuzzy Sugeno**: `8,643.94` *(Sugeno lebih rendah sebesar ~0.6%)*
 * **Mean Squared Error (MSE)**:
-  * **Fuzzy Mamdani**: `1,175,925,987.53` *(Mamdani lebih rendah sebesar ~5.6%)*
-  * **Fuzzy Sugeno**: `1,245,296,935.93`
+  * **Fuzzy Mamdani**: `120,624,176.47`
+  * **Fuzzy Sugeno**: `117,519,157.54` *(Sugeno lebih rendah sebesar ~2.6%)*
 * **Root Mean Squared Error (RMSE)**:
-  * **Fuzzy Mamdani**: `34,291.78` *(Mamdani lebih rendah)*
-  * **Fuzzy Sugeno**: `35,288.77`
+  * **Fuzzy Mamdani**: `10,982.90`
+  * **Fuzzy Sugeno**: `10,840.63` *(Sugeno lebih rendah sebesar ~1.3%)*
+* **Akurasi Klasifikasi Kategori (Classification Accuracy)**:
+  * **Fuzzy Mamdani**: `49.11%` (1.263 dari 2.572 benar)
+  * **Fuzzy Sugeno**: `51.48%` (1.324 dari 2.572 benar) *(Sugeno lebih tinggi sebesar ~2.37% akurasi)*
 
 ### Analisis Kualitatif & Interpretasi:
 1. **Fuzzy Mamdani** lebih unggul pada nilai MSE dan RMSE yang berarti metode ini lebih tangguh terhadap lonjakan kesalahan (*outlier*), karena sifat daerah keanggotaan kontinu pada output memperhalus perubahan harga.
