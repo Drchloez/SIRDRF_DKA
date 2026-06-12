@@ -189,7 +189,6 @@ def kategori_mobil(harga):
 def main():
     st.set_page_config(
         page_title="Estimator Harga Mercedes-Benz | Fuzzy Mamdani & Sugeno", 
-        page_icon="🚗",
         layout="wide"
     )
 
@@ -900,7 +899,6 @@ body.light-mode .visual-overlay {
         <section class="bento-card card-result" id="result-mamdani">
             <div class="card-header">
                 <span class="project-tag">Metode Mamdani</span>
-                <span class="result-indicator indicator-mamdani">🔴</span>
             </div>
             <div class="result-display">
                 <h3 class="result-price" id="price-mamdani">-</h3>
@@ -913,7 +911,6 @@ body.light-mode .visual-overlay {
         <section class="bento-card card-result" id="result-sugeno">
             <div class="card-header">
                 <span class="project-tag">Metode Sugeno</span>
-                <span class="result-indicator indicator-sugeno">🟢</span>
             </div>
             <div class="result-display">
                 <h3 class="result-price" id="price-sugeno">-</h3>
@@ -926,7 +923,7 @@ body.light-mode .visual-overlay {
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2026 mercedes-fuzzy.ai • Tugas Besar DKA Telkom University • Dataset Source: <a href="https://www.kaggle.com/datasets/koki2525/mercedes-benz-used-car-dataset" target="_blank">Kaggle</a></p>
+        <p>&copy; 2026 mercedes-fuzzy.ai • Tugas Besar DKA Telkom University • Dataset Source: <a href="https://www.kaggle.com/datasets/adityadesai13/used-car-dataset-ford-and-mercedes?select=merc.csv&hl=id-IDJ" target="_blank">Kaggle</a></p>
     </footer>
 
     <!-- Script -->
